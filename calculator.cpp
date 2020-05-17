@@ -57,7 +57,7 @@ int main()
     lst->id = 0;
     lst->next = NULL;
     lst->val = 0;
-
+    string s;
     list<char>* lst1 = new list<char>;
     lst1->id = '|';
     lst1->next = NULL;
@@ -94,12 +94,16 @@ int main()
                 i++;
             }
             push(lst, c*stod(num));
+            s += std::to_string(c * stod(num));
+            s += " ";
             c = 1;
         }
         else {
             if (str[i] == ')') {
                 while (lst1->id != '(') {
                     char op = pop(lst1);
+                    s += op;
+                    s += " ";
                     switch (op) {
                     case('+'):
                         push(lst, pop(lst) + pop(lst));
@@ -129,6 +133,8 @@ int main()
                 if (str[i] == '=') {
                     while (lst1->id!='|') {
                         char op = pop(lst1);
+                        s += op;
+                        s += " ";
                         switch (op) {
                         case('+'):
                             push(lst, pop(lst) + pop(lst));
@@ -164,6 +170,8 @@ int main()
                         else {
                             while (t < priority(lst1->id)) {
                                 char op = pop(lst1);
+                                s += op;
+                                s += " ";
                                 switch (op) {
                                 case('*'):
                                     push(lst, pop(lst) * pop(lst));
@@ -187,13 +195,8 @@ int main()
                 }
             }
         }
-
-        std::cout << "\nStack X: ";
-        print_list(lst);
-        std::cout << "\nStack Y: ";
-        print_list(lst1);
     }
-
+    std::cout << "\n" << s<<"=";
     std::cout << "\nAnswer: " << lst->id << "\n";
     return 0;
 }
