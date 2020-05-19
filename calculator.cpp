@@ -25,7 +25,7 @@ void push(list<T>*& ptr, T x)
 template < typename T >
 void print_list(list<T>* ptr)
 {
-    if (ptr->val!=0)
+    if (ptr->val != 0)
     {
         cout << ptr->id << " -> ";
         print_list(ptr->next);
@@ -93,7 +93,7 @@ int main()
                 num += str[i];
                 i++;
             }
-            push(lst, c*stod(num));
+            push(lst, c * stod(num));
             s += std::to_string(c * stod(num)).substr(0, 4);
             s += " ";
             c = 1;
@@ -131,7 +131,7 @@ int main()
             }
             else {
                 if (str[i] == '=') {
-                    while (lst1->id!='|') {
+                    while (lst1->id != '|') {
                         char op = pop(lst1);
                         s += op;
                         s += " ";
@@ -166,13 +166,19 @@ int main()
                         i++;
                     }
                     else {
-                        if ((str[i] == '-' && i==0) || (str[i] == '-' && str[i-1]=='(')) c= -1;
+                        if ((str[i] == '-' && i == 0) || (str[i] == '-' && str[i - 1] == '(')) c = -1;
                         else {
-                            while (t < priority(lst1->id)) {
+                            while (t <= priority(lst1->id)) {
                                 char op = pop(lst1);
                                 s += op;
                                 s += " ";
                                 switch (op) {
+                                case('+'):
+                                    push(lst, pop(lst) + pop(lst));
+                                    break;
+                                case('-'):
+                                    push(lst, -(pop(lst) - pop(lst)));
+                                    break;
                                 case('*'):
                                     push(lst, pop(lst) * pop(lst));
                                     break;
@@ -186,6 +192,7 @@ int main()
                                     }
                                     break;
                                 }
+
                             }
                             push(lst1, str[i]);
 
@@ -196,7 +203,7 @@ int main()
             }
         }
     }
-    std::cout << "\n" << s<<"=";
+    std::cout << "\n" << s << "=";
     std::cout << "\nAnswer: " << lst->id << "\n";
     return 0;
 }
