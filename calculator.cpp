@@ -94,7 +94,7 @@ int main()
                 i++;
             }
             push(lst, c*stod(num));
-            s += std::to_string(c * stod(num));
+            s += std::to_string(c * stod(num)).substr(0, 4);
             s += " ";
             c = 1;
         }
