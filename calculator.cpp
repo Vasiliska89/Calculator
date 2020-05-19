@@ -49,19 +49,38 @@ int priority(char x) {
     if (x == '+' || x == '-') return 3;
     if (x == '*' || x == '/') return 4;
 }
+int operate(list<char>*&lst1, list<double>*& lst, string& s) {
+    char op = pop(lst1);
+    s += op;
+    s += " ";
+    switch (op) {
+    case('+'):
+        push(lst, pop(lst) + pop(lst));
+        break;
+    case('-'):
+        push(lst, -(pop(lst) - pop(lst)));
+        break;
+    case('*'):
+        push(lst, pop(lst) * pop(lst));
+        break;
+    case('/'):
+        double x = pop(lst);
+        double y = pop(lst);
+        if (x != 0) push(lst, y / x);
+        else {
+            std::cout << "Division by zero!!!";
+            return 0;
+        }
+        break;
+    }
+}
 int main()
 {
     ifstream file("input.txt");
     int c = 1;
-    list<double>* lst = new list<double>;
-    lst->id = 0;
-    lst->next = NULL;
-    lst->val = 0;
+    list<double>* lst = NULL;
     string s;
-    list<char>* lst1 = new list<char>;
-    lst1->id = '|';
-    lst1->next = NULL;
-    lst1->val = 0;
+    list<char>* lst1 = NULL;
 
     string str;
     std::getline(file, str);
@@ -100,62 +119,16 @@ int main()
         }
         else {
             if (str[i] == ')') {
-                while (lst1->id != '(') {
-                    char op = pop(lst1);
-                    s += op;
-                    s += " ";
-                    switch (op) {
-                    case('+'):
-                        push(lst, pop(lst) + pop(lst));
-                        break;
-                    case('-'):
-                        push(lst, -(pop(lst) - pop(lst)));
-                        break;
-                    case('*'):
-                        push(lst, pop(lst) * pop(lst));
-                        break;
-                    case('/'):
-                        double x = pop(lst);
-                        double y = pop(lst);
-                        if (x != 0) push(lst, y / x);
-                        else {
-                            std::cout << "Division by zero!!!";
-                            return 0;
-                        }
-                        break;
-                    }
-
+                while (lst1 != NULL && lst1->id != '(') {
+                    operate(lst1, lst, s);
                 }
                 pop(lst1);
                 i++;
             }
             else {
                 if (str[i] == '=') {
-                    while (lst1->id != '|') {
-                        char op = pop(lst1);
-                        s += op;
-                        s += " ";
-                        switch (op) {
-                        case('+'):
-                            push(lst, pop(lst) + pop(lst));
-                            break;
-                        case('-'):
-                            push(lst, -(pop(lst) - pop(lst)));
-                            break;
-                        case('*'):
-                            push(lst, pop(lst) * pop(lst));
-                            break;
-                        case('/'):
-                            double x = pop(lst);
-                            double y = pop(lst);
-                            if (x != 0) push(lst, y / x);
-                            else {
-                                std::cout << "Division by zero!!!";
-                                return 0;
-                            }
-                            break;
-                        }
-
+                    while (lst1!=NULL) {
+                        operate(lst1, lst, s);
                     }
                     i++;
                 }
@@ -168,31 +141,8 @@ int main()
                     else {
                         if ((str[i] == '-' && i == 0) || (str[i] == '-' && str[i - 1] == '(')) c = -1;
                         else {
-                            while (t <= priority(lst1->id)) {
-                                char op = pop(lst1);
-                                s += op;
-                                s += " ";
-                                switch (op) {
-                                case('+'):
-                                    push(lst, pop(lst) + pop(lst));
-                                    break;
-                                case('-'):
-                                    push(lst, -(pop(lst) - pop(lst)));
-                                    break;
-                                case('*'):
-                                    push(lst, pop(lst) * pop(lst));
-                                    break;
-                                case('/'):
-                                    double x = pop(lst);
-                                    double y = pop(lst);
-                                    if (x != 0) push(lst, y / x);
-                                    else {
-                                        std::cout << "Division by zero!!!";
-                                        return 0;
-                                    }
-                                    break;
-                                }
-
+                            while (lst1 != NULL && t <= priority(lst1->id)) {
+                                operate(lst1, lst, s);
                             }
                             push(lst1, str[i]);
 
