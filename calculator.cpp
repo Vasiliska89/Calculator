@@ -43,7 +43,6 @@ T pop(list<T>*& ptr)
     return(x);
 }
 int priority(char x) {
-    if (x == '|') return 0;
     if (x == '=') return 1;
     if (x == '(') return 2;
     if (x == '+' || x == '-') return 3;
